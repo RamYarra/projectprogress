@@ -28,7 +28,7 @@ var svg = d3.select("#my_dataviz")
 //Read the data
 d3.csv("https://raw.githubusercontent.com/RamYarra/projectprogress/main/Progress31.csv.csv", function(data) {
 
-  // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
+  // Labels of row and columns
   var myGroups = d3.map(data, function(d){return d.group;}).keys()
   var myVars = d3.map(data, function(d){return d.variable;}).keys()
 
