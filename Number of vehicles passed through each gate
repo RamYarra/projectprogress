@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+	
+<body>
+	<h1>Number of Vehicles passed through each Gate</h1>
+</body>
+<script src="https://d3js.org/d3.v4.js"></script>
+
+
+<div id="my_dataviz"></div>
+
+<script>
+
+
+var calls=[
+	{group:"camping 0", value:1590},
+	{group:"camping 1", value:340},
+	{group:"camping 2", value:2280},
+	{group:"camping 3", value:2464},
+	{group:"camping 4", value:2772},
+	{group:"camping 5", value:3184},
+	{group:"camping 6", value:2465},
+	{group:"camping 7", value:2190},
+	{group:"camping 8", value:3220},
+	{group:"entrance 0", value:6576},
+	{group:"entrance 1", value:6267},
+	{group:"entrance 2", value:7133},
+	{group:"entrance 3", value:8531},
+	{group:"entrance 4", value:6953},
+	{group:"gate 0", value:124},
+	{group:"gate 1", value:124},
+	{group:"gate 2", value:440},
+	{group:"gate 3", value:1234},
+	{group:"gate 4", value:916},
+	{group:"gate 5", value:1671},
+	{group:"gate 6", value:1185},
+	{group:"gate 7", value:670},
+	{group:"gate 8", value:1996},
+	{group:"general gate 0", value:216},
+	{group:"general gate 1", value:14677},
+	{group:"general gate 2", value:14801},
+	{group:"general gate 3", value:859},
+	{group:"general gate 4", value:10974},
+	{group:"general gate 5", value:9435},
+	{group:"general gate 6", value:2194},
+	{group:"general gate 7", value:16119},
+	{group:"ranger base", value:1996},
+	{group:"ranger stop 0", value:15078},
+	{group:"ranger stop 1", value:466},
+	{group:"ranger stop 2", value:15019},
+	{group:"ranger stop 3", value:1236},
+	{group:"ranger stop 4", value:612},
+	{group:"ranger stop 5", value:920},
+	{group:"ranger stop 6", value:1878},
+	{group:"ranger stop 7", value:672}
+];
+
+
+
+var margin = {top: 30, right: 30, bottom: 50, left: 60},
+    width = 3500 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+var x = d3.scaleBand()
+  .range([ 0, width ])
+  .domain(calls.map(function(d) { return d.group; }))
+  .padding(0.6);
+svg.append("g")
+  .attr("transform", "translate(0," + height + ")")
+  .call(d3.axisBottom(x))
+
+var y = d3.scaleLinear()
+  .domain([0, 20000])
+  .range([ height, 0]);
+svg.append("g")
+  .attr("class", "myYaxis")
+  .call(d3.axisLeft(y));
+
+function update(data) {
+
+  var u = svg.selectAll("rect")
+    .data(data)
+
+  u
+    .enter()
+    .append("rect")
+    .merge(u)
+    .transition()
+    .duration(1000)
+      .attr("x", function(d) { return x(d.group); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.value); })
+      .attr("fill", "#008080")
+}
+
+update(calls)
+
+</script>
